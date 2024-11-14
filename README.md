@@ -66,3 +66,16 @@ This will start the Flask server and make the interactive application available 
 1. Open your browser and go to `http://127.0.0.1:3000`.
 2. Choose the range of the shift distance by specifying the lower bound (inclusive), the upper bound (inclusive), and the total step number of shifts.
 3. The resulting figure will be displayed.
+
+---
+***Submission***
+
+1. Create a Short Demo Video (1-2 minutes):
+
+- Create a demo video by screen recording your output with your voice-over.
+- Explain any patterns you observe and discuss what happens when the shift increases.
+- Explain the relation between the plotted parameters.
+
+2. Submit both your completed code and the demo video link.
+You can either embed the demo video in your portfolio website or just create an unlisted YouTube video with a link to that YT video in your assignment 8 github repo's readme.
+
