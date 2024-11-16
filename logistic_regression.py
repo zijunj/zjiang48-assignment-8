@@ -3,9 +3,13 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from scipy.spatial.distance import cdist
 import os
+import matplotlib
 
 result_dir = "results"
 os.makedirs(result_dir, exist_ok=True)
+
+matplotlib.use('Agg')  # Use a non-interactive backend like Agg
+
 
 def generate_ellipsoid_clusters(distance, n_samples=100, cluster_std=0.5):
     np.random.seed(0)
@@ -17,7 +21,7 @@ def generate_ellipsoid_clusters(distance, n_samples=100, cluster_std=0.5):
     y1 = np.zeros(n_samples)
 
     # Generate the second cluster (class 1)
-    X2 = np.random.multivariate_normal(mean=[1, 1], cov=covariance_matrix, size=n_samples)
+    X2 = np.random.multivariate_normal(mean=[1 - distance, 1 + distance], cov=covariance_matrix, size=n_samples)
     
     # Implement: Shift the second cluster along the x-axis and y-axis for a given distance
     # raise NotImplementedError("Implement the shift of the second cluster")
@@ -96,6 +100,8 @@ def do_experiments(start, end, step_num):
         
         # Plot decision boundary
         plt.plot([x_min, x_max], [slope * x_min + intercept, slope * x_max + intercept], 'k--')
+        plt.xlim(x_min, x_max)
+        plt.ylim(y_min, y_max)
 
         # Plot fading red and blue contours for confidence levels
         contour_levels = [0.7, 0.8, 0.9]
@@ -124,7 +130,7 @@ def do_experiments(start, end, step_num):
             plt.legend(loc='lower right', fontsize=20)
 
         sample_data[distance] = (X, y, model, beta0, beta1, beta2, min_distance)
-
+    
     plt.tight_layout()
     plt.savefig(f"{result_dir}/dataset.png")
 
