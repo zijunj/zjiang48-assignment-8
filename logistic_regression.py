@@ -17,11 +17,12 @@ def generate_ellipsoid_clusters(distance, n_samples=100, cluster_std=0.5):
                                   [cluster_std * 0.8, cluster_std]])
     
     # Generate the first cluster (class 0)
-    X1 = np.random.multivariate_normal(mean=[1 + distance, 1 + distance], cov=covariance_matrix, size=n_samples)
+    X1 = np.random.multivariate_normal(mean=[1, 1], cov=covariance_matrix, size=n_samples)
     y1 = np.zeros(n_samples)
 
     # Generate the second cluster (class 1)
     X2 = np.random.multivariate_normal(mean=[1 - distance, 1 + distance], cov=covariance_matrix, size=n_samples)
+    # X2 += distance * np.array([-1,1])
     
     # Implement: Shift the second cluster along the x-axis and y-axis for a given distance
     # raise NotImplementedError("Implement the shift of the second cluster")
@@ -97,6 +98,9 @@ def do_experiments(start, end, step_num):
 
         # Implement: Calculate decision boundary slope and intercept
         # raise NotImplementedError("Calculate and plot decision boundary slope and intercept")
+        x_vals = np.linspace(X[:, 0].min(), X[:, 0].max(), 100)
+        y_vals = slope * x_vals + intercept
+        plt.plot(x_vals, y_vals, 'k--', label='Decision Boundary')
         
         # Plot decision boundary
         plt.plot([x_min, x_max], [slope * x_min + intercept, slope * x_max + intercept], 'k--')
@@ -130,6 +134,9 @@ def do_experiments(start, end, step_num):
             plt.legend(loc='lower right', fontsize=20)
 
         sample_data[distance] = (X, y, model, beta0, beta1, beta2, min_distance)
+    print(shift_distances)
+    print(slope_list)
+
     
     plt.tight_layout()
     plt.savefig(f"{result_dir}/dataset.png")
@@ -164,12 +171,11 @@ def do_experiments(start, end, step_num):
     plt.title("Shift Distance vs Beta1 / Beta2 (Slope)")
     plt.xlabel("Shift Distance")
     plt.ylabel("Beta1 / Beta2")
-    plt.ylim(-2, 0)
 
     # Plot beta0 / beta2 (Intercept ratio)
     intercept_ratio = [b0 / b2 for b0, b2 in zip(beta0_list, beta2_list)]
     plt.subplot(3, 3, 5)
-    plt.plot(shift_distances, intercept_ratio, marker='o', color='orange')
+    plt.plot(shift_distances, intercept_list, marker='o', color='orange')
     plt.title("Shift Distance vs Beta0 / Beta2 (Intercept Ratio)")
     plt.xlabel("Shift Distance")
     plt.ylabel("Beta0 / Beta2")
